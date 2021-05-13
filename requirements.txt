@@ -1,0 +1,6 @@
+numpy>=1.20
+pytorch-lightning>=1.3
+scikit-learn>=0.24
+jsonargparse[signatures]>=3.11
+torch>=1.8
+pandas>1.2
