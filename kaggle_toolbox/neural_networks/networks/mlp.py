@@ -10,6 +10,7 @@ def mlp(
     n_outputs: Optional[int] = None,
     dropout_probs: Optional[Union[float, Sequence[float]]] = None,
     batch_norm: bool = False,
+    bn_1st: bool = True,
     activation: Optional[torch.nn.Module] = None,
 ) -> torch.nn.Module:
     if isinstance(n_hidden_units, int):
@@ -38,12 +39,16 @@ def mlp(
     for i, (n_in, n_out, dropout_prob) in enumerate(zip([n_inputs] + list(n_hidden_units[:-1]), n_hidden_units, dropout_probs)):
         layer = []
         layer.append(torch.nn.Linear(n_in, n_out))
+
+        if batch_norm and bn_1st:
+            layer.append(torch.nn.BatchNorm1d(n_out))
+
         if activation is None:
             layer.append(torch.nn.ReLU())
         else:
             layer.append(activation())
 
-        if batch_norm:
+        if batch_norm and not bn_1st:
             layer.append(torch.nn.BatchNorm1d(n_out))
 
         if dropout_prob > 0:
