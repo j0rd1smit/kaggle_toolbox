@@ -1,5 +1,6 @@
 from typing import List, Optional, Sequence, Union
 
+import numpy as np
 import torch.nn
 
 
@@ -20,7 +21,10 @@ def mlp(
         n_hidden_units = []
     n_hidden_units = list(n_hidden_units)
 
-    if isinstance(dropout_probs, float) or isinstance(dropout_probs, int):
+    if isinstance(dropout_probs, (np.int_, np.float_)):
+        dropout_probs = dropout_probs.item()
+
+    if isinstance(dropout_probs, (float, int)):
         dropout_probs = [dropout_probs for _ in n_hidden_units]
     if dropout_probs is None:
         dropout_probs = [0 for _ in n_hidden_units]
@@ -61,3 +65,8 @@ def mlp(
         sequence.append(torch.nn.Linear(last_size, n_outputs))
 
     return torch.nn.Sequential(*sequence)
+
+
+if __name__ == "__main__":
+    m = mlp(n_inputs=1, n_hidden_units=[8, 8], n_outputs=1, dropout_probs=np.array([0.1, 0.2]))
+    print(m)
