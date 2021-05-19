@@ -21,7 +21,7 @@ def mlp(
         n_hidden_units = []
     n_hidden_units = list(n_hidden_units)
 
-    if isinstance(dropout_probs, (np.int_, np.float_)):
+    if isinstance(dropout_probs, (np.integer, np.floating)):
         dropout_probs = dropout_probs.item()
 
     if isinstance(dropout_probs, (float, int)):
@@ -68,5 +68,5 @@ def mlp(
 
 
 if __name__ == "__main__":
-    m = mlp(n_inputs=1, n_hidden_units=[8, 8], n_outputs=1, dropout_probs=np.array([0.1, 0.2]))
+    m = mlp(n_inputs=1, n_hidden_units=[8, 8], n_outputs=1, dropout_probs=np.array([0.1, 0.2], dtype=np.float32))
     print(m)
